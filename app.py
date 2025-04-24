@@ -18,7 +18,7 @@ client = SecretClient(vault_url=KVUri, credential=credential)
 # Secret'ları çek
 PGHOST = client.get_secret("PGHOST").value
 PGUSER = client.get_secret("PGUSER").value
-PGPASSWORD = client.get_secret("PGPASSWORD").value
+PGPASSWORD = client.get_secret("PASSWORD").value
 PGDATABASE = client.get_secret("PGDATABASE").value
 PGPORT = client.get_secret("PGPORT").value
 
@@ -28,7 +28,7 @@ def connect_db():
     host=PGHOST,
     dbname=PGDATABASE,
     user=PGUSER,
-    password=PGPASSWORD,
+    password=PASSWORD,
     port=PGPORT,
     sslmode="require"
 )
