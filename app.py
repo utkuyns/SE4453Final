@@ -25,12 +25,14 @@ PGPORT = client.get_secret("PGPORT").value
 # PostgreSQL bağlantı fonksiyonu
 def connect_db():
     conn = psycopg2.connect(
-        host=PGHOST,
-        dbname=PGDATABASE,
-        user=PGUSER,
-        password=PGPASSWORD,
-        port=PGPORT
-    )
+    host=PGHOST,
+    dbname=PGDATABASE,
+    user=PGUSER,
+    password=PGPASSWORD,
+    port=PGPORT,
+    sslmode="require"
+)
+
     return conn
 
 @app.route("/")
