@@ -1,32 +1,54 @@
 import os
+import psycopg2
+from flask import Flask
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 
-from flask import (Flask, redirect, render_template, request,
-                   send_from_directory, url_for)
-
+# Flask uygulamasını başlat
 app = Flask(__name__)
 
+# Key Vault bilgileri
+KEY_VAULT_NAME = "yazilimmidtermkv"
+KVUri = f"https://{KEY_VAULT_NAME}.vault.azure.net/"
 
-@app.route('/')
+# Azure Managed Identity ile giriş
+credential = DefaultAzureCredential()
+client = SecretClient(vault_url=KVUri, credential=credential)
+
+# Secret'ları çek
+PGHOST = client.get_secret("PGHOST").value
+PGUSER = client.get_secret("PGUSER").value
+PGPASSWORD = client.get_secret("PGPASSWORD").value
+PGDATABASE = client.get_secret("PGDATABASE").value
+PGPORT = client.get_secret("PGPORT").value
+
+# PostgreSQL bağlantı fonksiyonu
+def connect_db():
+    conn = psycopg2.connect(
+        host=PGHOST,
+        dbname=PGDATABASE,
+        user=PGUSER,
+        password=PGPASSWORD,
+        port=PGPORT
+    )
+    return conn
+
+@app.route("/")
 def index():
-   print('Request for index page received')
-   return render_template('index.html')
+    return "Welcome to Azure App!"
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
-@app.route('/hello', methods=['POST'])
+@app.route("/hello")
 def hello():
-   name = request.form.get('name')
-
-   if name:
-       print('Request for hello page received with name=%s' % name)
-       return render_template('hello.html', name = name)
-   else:
-       print('Request for hello page received with no name or blank name -- redirecting')
-       return redirect(url_for('index'))
-
+    try:
+        conn = connect_db()
+        cur = conn.cursor()
+        cur.execute("SELECT 1;")
+        result = cur.fetchone()
+        cur.close()
+        conn.close()
+        return f"DB Connected! Query Result: {result[0]}"
+    except Exception as e:
+        return f"Database connection failed: {str(e)}"
 
 if __name__ == '__main__':
-   app.run()
+    app.run()
