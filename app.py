@@ -36,22 +36,25 @@ def connect_db():
 
     return conn
 
-@app.route("/")
-def index():
-    return "Welcome to Azure App!"
-
 @app.route("/hello")
 def hello():
     try:
         conn = connect_db()
         cur = conn.cursor()
-        cur.execute("SELECT 1;")
-        result = cur.fetchone()
+        cur.execute("SELECT * FROM ogrenciler;")
+        rows = cur.fetchall()
         cur.close()
         conn.close()
-        return f"DB Connected! Query Result: {result[0]}"
+
+        # Sonuçları string'e çevir
+        result = "<h2>Öğrenciler:</h2><ul>"
+        for row in rows:
+            result += f"<li>ID: {row[0]}, Ad: {row[1]}, Soyad: {row[2]}, No: {row[3]}, Ders: {row[4]}, Midterm: {row[5]}</li>"
+        result += "</ul>"
+        return result
     except Exception as e:
         return f"Database connection failed: {str(e)}"
+
 
 if __name__ == '__main__':
     app.run()
