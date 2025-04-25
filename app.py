@@ -28,8 +28,8 @@ def connect_db():
     conn = psycopg2.connect(
     host=PGHOST,
     dbname=PGDATABASE,
-    user=USER,
-    password=PASSWORD,
+    user=PGUSER,
+    password=PGPASSWORD,
     port=PGPORT,
     sslmode="require"
 )
