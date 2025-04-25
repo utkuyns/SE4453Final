@@ -20,7 +20,7 @@ PGHOST = client.get_secret("PGHOST").value
 PGPASSWORD = client.get_secret("PASSWORD").value
 PGDATABASE = client.get_secret("PGDATABASE").value
 PGPORT = client.get_secret("PGPORT"). 
-PGUSER = client.get_secret("PGUSER").value + "@midtermyazilimprojectdb"
+PGUSER = client.get_secret("USER").value + "@midtermyazilimprojectdb"
 
 
 # PostgreSQL bağlantı fonksiyonu
@@ -28,7 +28,7 @@ def connect_db():
     conn = psycopg2.connect(
     host=PGHOST,
     dbname=PGDATABASE,
-    user=PGUSER,
+    user=USER,
     password=PASSWORD,
     port=PGPORT,
     sslmode="require"
