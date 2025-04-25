@@ -17,10 +17,11 @@ client = SecretClient(vault_url=KVUri, credential=credential)
 
 # Secret'ları çek
 PGHOST = client.get_secret("PGHOST").value
-PGUSER = client.get_secret("PGUSER").value
 PGPASSWORD = client.get_secret("PASSWORD").value
 PGDATABASE = client.get_secret("PGDATABASE").value
-PGPORT = client.get_secret("PGPORT").value
+PGPORT = client.get_secret("PGPORT"). 
+PGUSER = client.get_secret("PGUSER").value + "@midtermyazilimprojectdb"
+
 
 # PostgreSQL bağlantı fonksiyonu
 def connect_db():
