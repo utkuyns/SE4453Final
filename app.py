@@ -20,7 +20,7 @@ PGHOST = client.get_secret("PGHOST").value
 PGPASSWORD = client.get_secret("PASSWORD").value
 PGDATABASE = client.get_secret("PGDATABASE").value
 PGPORT = client.get_secret("PGPORT").value
-PGUSER = client.get_secret("USER").value
+PGUSER = client.get_secret("userNew").value
 
 
 # PostgreSQL bağlantı fonksiyonu
