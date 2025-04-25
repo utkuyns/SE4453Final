@@ -19,7 +19,7 @@ client = SecretClient(vault_url=KVUri, credential=credential)
 PGHOST = client.get_secret("PGHOST").value
 PGPASSWORD = client.get_secret("PASSWORD").value
 PGDATABASE = client.get_secret("PGDATABASE").value
-PGPORT = client.get_secret("PGPORT"). 
+PGPORT = client.get_secret("PGPORT").value
 PGUSER = client.get_secret("USER").value
 
 
