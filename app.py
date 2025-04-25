@@ -36,6 +36,10 @@ def connect_db():
 
     return conn
 
+@app.route("/")
+def index():
+    return "<h1>Welcome to Midterm Project App</h1><p>Visit <a href='/hello'>/hello</a> to view student records.</p>"   
+
 @app.route("/hello")
 def hello():
     try:
