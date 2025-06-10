@@ -1,0 +1,31 @@
+name: Build and Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Build and Push Docker Image to ACR
+      run: |
+        docker build -t yazilimfinalacr.azurecr.io/test-image:v1 .
+        echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login yazilimfinalacr.azurecr.io -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+        docker push yazilimfinalacr.azurecr.io/test-image:v1
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: midtermprojectapp  
+        images: yazilimfinalacr.azurecr.io/test-image:v1
