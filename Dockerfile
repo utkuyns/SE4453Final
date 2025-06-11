@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY init.sh /init.sh
 RUN chmod +x /init.sh
 
-# Web (5000) ve SSH (2222) portları dışa açılıyor
+# Web (5000) ve SSH (2222) portları
 EXPOSE 5000 2222
 
 # Başlangıç komutu
