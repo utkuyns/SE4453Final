@@ -8,8 +8,8 @@ RUN apt-get update && \
 
 # SSH kullanıcı oluşturma (kullanıcı: admin / şifre: admin123)
 RUN useradd -m admin && echo "admin:admin123" | chpasswd && \
-    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 # Uygulama klasörüne geç
 WORKDIR /app
 
